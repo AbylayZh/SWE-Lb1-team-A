@@ -36,7 +36,6 @@ class Farmer(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    farm_location = Column(String, nullable=False)
 
     user = relationship("User", backref="farmers")  # Assuming a 'User' model exists
 

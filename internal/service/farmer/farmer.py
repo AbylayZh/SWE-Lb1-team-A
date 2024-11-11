@@ -11,6 +11,6 @@ class FarmerService:
 
     def Register(self, user_id, req: FarmerSignupRequest):
         try:
-            self.farmer_repository.Create(user_id, req.farm_location)
+            self.farmer_repository.Create(user_id)
         except Error as err:
             raise err

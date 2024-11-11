@@ -66,11 +66,10 @@ class FarmerRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def Create(self, user_id, location):
+    def Create(self, user_id):
         try:
             new_farmer = Farmer(
                 user_id=user_id,
-                farm_location=location
             )
 
             self.db.add(new_farmer)
