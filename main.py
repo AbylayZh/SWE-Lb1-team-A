@@ -7,13 +7,13 @@ from internal.handlers.farmer import router as farmer_router
 from internal.handlers.home import router as home_router
 from internal.handlers.user import router as user_router
 from internal.service.services import services
-from pkg.middleware.middleware import LogRequestMiddleware, Authenticate, VerifyAuthentication
+from pkg.middleware.middleware import Authenticate, VerifyAuthentication
 
 app = FastAPI()
 
 app.add_exception_handler(RequestValidationError, ValidationErrorHandler)
 
-app.add_middleware(LogRequestMiddleware, services=services)
+# app.add_middleware(LogRequestMiddleware, services=services)
 app.add_middleware(Authenticate, services=services)
 app.add_middleware(VerifyAuthentication, services=services)
 

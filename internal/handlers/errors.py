@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 
 
-def ClientErrorHandler(err: HTTPStatus, request, exc):
+def ClientErrorHandler(err: HTTPStatus, exc, request=None):
     return JSONResponse(
         status_code=err.value,
         content={
@@ -22,11 +22,11 @@ def ClientErrorHandler(err: HTTPStatus, request, exc):
 async def ValidationErrorHandler(req: Request, exc: RequestValidationError):
     body = await req.json()
     body.pop("password", None)
-    return ClientErrorHandler(HTTPStatus.UNPROCESSABLE_ENTITY, body, exc.errors())
+    return ClientErrorHandler(HTTPStatus.UNPROCESSABLE_ENTITY, exc.errors(), body)
 
 
 def ConflictErrorHandler(req: BaseModel, exc: IntegrityError):
-    return ClientErrorHandler(HTTPStatus.CONFLICT, req.dict(exclude={"password"}), str(exc.orig))
+    return ClientErrorHandler(HTTPStatus.CONFLICT, str(exc.orig), req.dict(exclude={"password"}))
 
 
 def InternalServerHandler(exc: Exception, errorLog):

@@ -3,9 +3,8 @@ from http import HTTPStatus
 from fastapi import Request, FastAPI
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import JSONResponse
 
-from internal.handlers.errors import InternalServerHandler
+from internal.handlers.errors import InternalServerHandler, ClientErrorHandler
 from internal.repository.models.errors import RoleAuthenticationError, UserAuthenticationError
 from internal.service.services import Services
 
@@ -54,32 +53,23 @@ class Authenticate(BaseServiceMiddleware):
 
 class VerifyAuthentication(BaseServiceMiddleware):
     async def dispatch(self, request: Request, call_next):
-        # Extract user from request state (set in earlier middleware)
-        user = getattr(request.state, 'user', None)
+        response = await call_next(request)
 
-        # If user is authenticated
+        user = getattr(request.state, 'user', None)
         if user:
             # Prevent logged-in users from accessing /login or /signup
             if request.url.path.startswith("/login") or request.url.path.startswith("/signup"):
-                return JSONResponse(
-                    status_code=HTTPStatus.FORBIDDEN.value,
-                    content={"message": HTTPStatus.FORBIDDEN.phrase}
-                )
+                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Authenticated", f"User_ID: {user.id}")
 
             # Ensure user can access only role-specific endpoints
-            if not request.url.path.startswith(f"/user/{user.role}"):
-                return JSONResponse(
-                    status_code=HTTPStatus.FORBIDDEN.value,
-                    content={"message": HTTPStatus.FORBIDDEN.phrase}
-                )
+            if request.url.path.startswith("/user"):
+                if not (request.url.path.startswith("/") or request.url.path.startswith(
+                        f"/user/{user.role}")):
+                    return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed",
+                                              {"User_ID": user.id, "User_Role": user.role})
         else:
             # Prevent unauthenticated users from accessing /user endpoints
             if request.url.path.startswith("/user"):
-                return JSONResponse(
-                    status_code=HTTPStatus.UNAUTHORIZED.value,
-                    content={"message": HTTPStatus.UNAUTHORIZED.phrase}
-                )
+                return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, "User Not Authenticated", f"User_ID: None")
 
-        # If no issues, continue with the request processing
-        response = await call_next(request)
         return response

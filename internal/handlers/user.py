@@ -21,7 +21,7 @@ async def UserLoginPost(req: LoginRequest, resp: Response, service: Services = D
         resp.set_cookie(key="session_id", value=session_id, secure=True, httponly=True, samesite="lax")
         return {"message": "OK", "redirect_url": "/"}
     except InvalidCredentialsError as e:
-        return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, req.dict(exclude={"password"}), str(e))
+        return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, str(e), req.dict(exclude={"password"}))
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)
 
@@ -32,4 +32,4 @@ async def UserLogout(req: Request, resp: Response, service: Services = Depends(s
 
     resp.status_code = HTTPStatus.SEE_OTHER.value
     resp.delete_cookie(key="session_id", secure=True, httponly=True, samesite="lax")
-    return {"redirect": True, "url": "/", "message": "OK"}
+    return {"message": "OK", "redirect_url": "/"}
