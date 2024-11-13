@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 
-from internal.repository.models.errors import Error
 from internal.repository.sqlite.users import FarmerRepository
 from internal.validators.users import FarmerSignupRequest
 
@@ -12,5 +11,5 @@ class FarmerService:
     def Register(self, user_id, req: FarmerSignupRequest):
         try:
             self.farmer_repository.Create(user_id)
-        except Error as err:
-            raise err
+        except Exception as e:
+            raise e

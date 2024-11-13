@@ -1,8 +1,6 @@
 import bcrypt
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm import Session
 
-from internal.repository.models.errors import SQLDefaultError, SQLConstraintError
 from internal.repository.models.users import User, Farmer, Buyer, Admin
 
 
@@ -28,18 +26,23 @@ class UserRepository:
             self.db.flush()
 
             return new_user.id
-        except IntegrityError as e:
+        except Exception as e:
             self.db.rollback()
-            raise SQLConstraintError(e)
-        except SQLAlchemyError as e:
-            self.db.rollback()
-            raise SQLDefaultError(e)
+            raise e
 
     def ReadByEmail(self, email: str) -> User:
         try:
             return self.db.query(User).filter(User.email == email).first()
-        except SQLAlchemyError as e:
-            raise SQLDefaultError(e)
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def ReadByID(self, id: int) -> User:
+        try:
+            return self.db.query(User).filter(User.id == id).first()
+        except Exception as e:
+            self.db.rollback()
+            raise e
 
 
 class AdminRepository:
@@ -54,12 +57,9 @@ class AdminRepository:
 
             self.db.add(new_admin)
             self.db.commit()
-        except IntegrityError as e:
+        except Exception as e:
             self.db.rollback()
-            raise SQLConstraintError(e)
-        except SQLAlchemyError as e:
-            self.db.rollback()
-            raise SQLDefaultError(e)
+            raise e
 
 
 class FarmerRepository:
@@ -74,12 +74,9 @@ class FarmerRepository:
 
             self.db.add(new_farmer)
             self.db.commit()
-        except IntegrityError as e:
+        except Exception as e:
             self.db.rollback()
-            raise SQLConstraintError(e)
-        except SQLAlchemyError as e:
-            self.db.rollback()
-            raise SQLDefaultError(e)
+            raise e
 
 
 class BuyerRepository:
@@ -96,9 +93,6 @@ class BuyerRepository:
 
             self.db.add(new_buyer)
             self.db.commit()
-        except IntegrityError as e:
+        except Exception as e:
             self.db.rollback()
-            raise SQLConstraintError(e)
-        except SQLAlchemyError as e:
-            self.db.rollback()
-            raise SQLDefaultError(e)
+            raise e

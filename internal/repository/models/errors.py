@@ -1,23 +1,15 @@
-from http import HTTPStatus
-
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-
-
-class Error(Exception):
-    def __init__(self, status: int, message: str):
-        self.http_status = status
-        self.message = message
-        super().__init__(self.message)
+class InvalidCredentialsError(Exception):
+    def __init__(self):
+        super().__init__("Invalid User Credentials")
 
 
-class SQLDefaultError(Error):
-    def __init__(self, err: SQLAlchemyError):
-        super().__init__(HTTPStatus.INTERNAL_SERVER_ERROR, str(err))
+class UserAuthenticationError(Exception):
+    def __init__(self):
+        super().__init__("User Authentication Error")
 
 
-class SQLConstraintError(Error):
-    def __init__(self, err: IntegrityError):
-        super().__init__(HTTPStatus.CONFLICT, str(err.orig))
+class RoleAuthenticationError(Exception):
+    def __init__(self):
+        super().__init__("Role Authentication Error")
 
-
-InvalidCredentialsErr = Error(HTTPStatus.UNAUTHORIZED, "INVALID CREDENTIALS")
+        "User Authentication Error"

@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
+Base.__allow_unmapped__ = True  # Enable allow_unmapped for all models
 
 
 class User(Base):
@@ -19,7 +20,11 @@ class User(Base):
     password = Column(String, nullable=False)
     created = Column(DateTime, default=datetime.utcnow)
 
-    role = "user"
+    admin = relationship('Admin', back_populates='user', uselist=False)
+    farmer = relationship('Farmer', back_populates='user', uselist=False)
+    buyer = relationship('Buyer', back_populates='user', uselist=False)
+
+    role: str
 
 
 class Admin(Base):
@@ -28,7 +33,7 @@ class Admin(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    user = relationship("User", backref="admins")  # Assuming a 'User' model exists
+    user = relationship('User', back_populates='admin')
 
 
 class Farmer(Base):
@@ -37,7 +42,7 @@ class Farmer(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    user = relationship("User", backref="farmers")  # Assuming a 'User' model exists
+    user = relationship('User', back_populates='farmer')
 
 
 class Buyer(Base):
@@ -48,4 +53,4 @@ class Buyer(Base):
     delivery_address = Column(String, nullable=False)
     preferred_payment = Column(Integer, nullable=False)
 
-    user = relationship("User", backref="buyers")
+    user = relationship('User', back_populates='buyer')

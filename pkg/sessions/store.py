@@ -5,8 +5,6 @@ from typing import Dict, Any
 
 from fastapi import Request
 
-from internal.repository.models.users import User
-
 
 class SessionStore:
     Store: Dict[str, Dict[str, Any]]
@@ -17,13 +15,13 @@ class SessionStore:
         self.ActiveSessions = {}
         self.Mutex = asyncio.Lock()
 
-    async def CreateSession(self, user: User = None) -> str:
+    async def CreateSession(self, user_id: int = None) -> str:
         session_id = str(uuid.uuid4())
 
         async with self.Mutex:
-            if user:
-                self.Store[session_id] = {"user_id": user.id, "role": user.role, "last_request": datetime.utcnow()}
-                self.ActiveSessions[user.id] = session_id
+            if user_id:
+                self.Store[session_id] = {"user_id": user_id, "last_request": datetime.utcnow()}
+                self.ActiveSessions[user_id] = session_id
                 return session_id
 
             self.Store[session_id] = {}
@@ -50,7 +48,7 @@ class SessionStore:
 
             self.Store.pop(session_id, None)
 
-    async def AddSessionData(self, req: Request, key: str, value: Any):
+    async def UpdateSessionData(self, req: Request, key: str, value: Any):
         session_id = req.cookies.get("session_id")
         if not session_id:
             session_id = await self.CreateSession()
@@ -73,3 +71,7 @@ class SessionStore:
 
             self.Store[session_id].pop("flash")
             return flash
+
+    async def UpdateSessionRequest(self, req: Request):
+        async with self.Mutex:
+            await self.UpdateSessionData(req, "last_request", datetime.utcnow())
