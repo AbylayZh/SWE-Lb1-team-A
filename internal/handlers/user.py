@@ -35,6 +35,18 @@ async def UserLogout(req: Request, resp: Response, service: Services = Depends(s
     resp.delete_cookie(key="session_id", secure=True, httponly=True, samesite="lax")
     return {"message": "OK", "redirect_url": "/"}
 
+
+@router.put("/user/update-password/{id}")
+async def UserPasswordUpdate(id: int, req: Request, resp: Response, service: Services = Depends(services)):
+    try:
+        service.user_service.UpdatePassword(id, req.get("password"))
+
+        resp.status_code = HTTPStatus.SEE_OTHER.value
+        return {"message": "OK", "redirect_url": "/"}
+    except Exception as e:
+        return InternalServerHandler(e, service.loggers.errorLog)
+
+
 @router.post("/signup/admin")
 def FarmerSignupPost(req: SignupRequest, response: Response, service: Services = Depends(services)):
     try:

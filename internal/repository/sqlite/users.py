@@ -1,9 +1,8 @@
 import bcrypt
-from pygments.lexers.dsls import VGLLexer
 from sqlalchemy.orm import Session
 
 from internal.repository.models.errors import NotFoundError
-from internal.repository.models.users import User, Farmer, Buyer, Admin
+from internal.repository.models.users import User
 
 
 class UserRepository:
@@ -58,7 +57,7 @@ class UserRepository:
             self.db.rollback()
             raise e
 
-    def UpdatePassword(self, user_id: int,new_password: str):
+    def UpdatePassword(self, user_id: int, new_password: str):
         try:
             user = self.db.query(User).filter_by(id=user_id).first()
             if user:

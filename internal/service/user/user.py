@@ -39,3 +39,9 @@ class UserService:
             return self.user_repository.ReadByID(user_id)
         except Exception as e:
             raise e
+
+    def UpdatePassword(self, user_id: int, password: str) -> int:
+        try:
+            return self.user_repository.UpdatePassword(user_id, password)
+        except Exception as e:
+            raise e
