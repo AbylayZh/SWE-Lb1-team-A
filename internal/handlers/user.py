@@ -2,11 +2,12 @@ from http import HTTPStatus
 
 from fastapi import APIRouter
 from fastapi import Depends, Request, Response
+from sqlalchemy.exc import IntegrityError
 
-from internal.handlers.errors import InternalServerHandler, ClientErrorHandler
+from internal.handlers.errors import InternalServerHandler, ClientErrorHandler, ConflictErrorHandler
 from internal.repository.models.errors import InvalidCredentialsError
 from internal.service.services import services, Services
-from internal.validators.users import LoginRequest
+from internal.validators.users import LoginRequest, SignupRequest
 
 router = APIRouter()
 
@@ -33,3 +34,17 @@ async def UserLogout(req: Request, resp: Response, service: Services = Depends(s
     resp.status_code = HTTPStatus.SEE_OTHER.value
     resp.delete_cookie(key="session_id", secure=True, httponly=True, samesite="lax")
     return {"message": "OK", "redirect_url": "/"}
+
+@router.post("/signup/admin")
+def FarmerSignupPost(req: SignupRequest, response: Response, service: Services = Depends(services)):
+    try:
+        with service.db_session.begin():
+            user_id = service.user_service.Register(req)
+            service.admin_service.Register(user_id)
+
+            response.status_code = HTTPStatus.SEE_OTHER.value
+            return {"message": "OK", "redirect_url": "/user/login"}
+    except IntegrityError as err:
+        return ConflictErrorHandler(req, err)
+    except Exception as err:
+        return InternalServerHandler(err, service.loggers.errorLog)

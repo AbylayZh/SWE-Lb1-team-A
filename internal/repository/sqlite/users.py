@@ -1,6 +1,8 @@
 import bcrypt
+from pygments.lexers.dsls import VGLLexer
 from sqlalchemy.orm import Session
 
+from internal.repository.models.errors import NotFoundError
 from internal.repository.models.users import User, Farmer, Buyer, Admin
 
 
@@ -44,55 +46,26 @@ class UserRepository:
             self.db.rollback()
             raise e
 
-
-class AdminRepository:
-    def __init__(self, db: Session):
-        self.db = db
-
-    def Create(self, user_id):
+    def Delete(self, user_id: int):
         try:
-            new_admin = Admin(
-                user_id=user_id,
-            )
-
-            self.db.add(new_admin)
-            self.db.commit()
+            user = self.db.query(User).filter_by(id=user_id).first()
+            if user:
+                self.db.delete(user)  # Mark the user for deletion
+                self.db.commit()  # Commit to apply the deletion
+            else:
+                raise NotFoundError()
         except Exception as e:
             self.db.rollback()
             raise e
 
-
-class FarmerRepository:
-    def __init__(self, db: Session):
-        self.db = db
-
-    def Create(self, user_id):
+    def UpdatePassword(self, user_id: int,new_password: str):
         try:
-            new_farmer = Farmer(
-                user_id=user_id,
-            )
-
-            self.db.add(new_farmer)
-            self.db.commit()
-        except Exception as e:
-            self.db.rollback()
-            raise e
-
-
-class BuyerRepository:
-    def __init__(self, db: Session):
-        self.db = db
-
-    def Create(self, user_id, address, payment):
-        try:
-            new_buyer = Buyer(
-                user_id=user_id,
-                delivery_address=address,
-                preferred_payment=payment
-            )
-
-            self.db.add(new_buyer)
-            self.db.commit()
+            user = self.db.query(User).filter_by(id=user_id).first()
+            if user:
+                user.password = new_password  # Update the password field
+                self.db.commit()  # Commit the change to the database
+            else:
+                raise NotFoundError()
         except Exception as e:
             self.db.rollback()
             raise e

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from internal.repository.sqlite.users import BuyerRepository
+from internal.repository.sqlite.buyers import BuyerRepository
 from internal.validators.users import BuyerSignupRequest
 
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from internal.repository.sqlite.users import FarmerRepository
+from internal.repository.sqlite.farmers import FarmerRepository
 from internal.validators.users import FarmerSignupRequest
 
 

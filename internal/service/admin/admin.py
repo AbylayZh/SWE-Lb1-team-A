@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from internal.repository.sqlite.users import AdminRepository
+from internal.repository.sqlite.admins import AdminRepository
 
 
 class AdminService:

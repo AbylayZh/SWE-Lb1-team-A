@@ -57,6 +57,10 @@ class VerifyAuthentication(BaseServiceMiddleware):
 
         user = getattr(request.state, 'user', None)
         if user:
+            if user.approved == 0:
+                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed",
+                                          {"User_ID": user.id, "User_Role": user.role, "Approved": user.approved})
+
             # Prevent logged-in users from accessing /login or /signup
             if request.url.path.startswith("/login") or request.url.path.startswith("/signup"):
                 return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Authenticated", f"User_ID: {user.id}")
@@ -66,7 +70,7 @@ class VerifyAuthentication(BaseServiceMiddleware):
                 if not (request.url.path.startswith("/") or request.url.path.startswith(
                         f"/user/{user.role}")):
                     return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed",
-                                              {"User_ID": user.id, "User_Role": user.role})
+                                              {"User_ID": user.id, "User_Role": user.role, "Approved": user.approved})
         else:
             # Prevent unauthenticated users from accessing /user endpoints
             if request.url.path.startswith("/user"):

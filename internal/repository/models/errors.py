@@ -12,4 +12,8 @@ class RoleAuthenticationError(Exception):
     def __init__(self):
         super().__init__("Role Authentication Error")
 
-        "User Authentication Error"
+class NotFoundError(Exception):
+    def __init__(self):
+        super().__init__("Not Found Error")
+
+
