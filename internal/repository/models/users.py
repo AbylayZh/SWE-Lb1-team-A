@@ -20,6 +20,7 @@ class User(Base):
     password = Column(String, nullable=False)
     created = Column(DateTime, default=datetime.utcnow)
     approved = Column(Integer, nullable=False, default=0)
+    enabled = Column(Integer, nullable=False, default=1)
 
     admin = relationship('Admin', back_populates='user', uselist=False)
     farmer = relationship('Farmer', back_populates='user', uselist=False)

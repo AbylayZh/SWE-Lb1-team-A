@@ -45,3 +45,21 @@ class UserService:
             return self.user_repository.UpdatePassword(user_id, password)
         except Exception as e:
             raise e
+
+    def GetUnapprovedAll(self) -> User:
+        try:
+            return self.user_repository.ReadUnapprovedAll()
+        except Exception as e:
+            raise e
+
+    def GetActiveAll(self) -> User:
+        try:
+            return self.user_repository.ReadActiveAll()
+        except Exception as e:
+            raise e
+
+    def GetInactiveAll(self) -> User:
+        try:
+            return self.user_repository.ReadInactiveAll()
+        except Exception as e:
+            raise e

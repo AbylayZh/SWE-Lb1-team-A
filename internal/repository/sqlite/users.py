@@ -68,3 +68,24 @@ class UserRepository:
         except Exception as e:
             self.db.rollback()
             raise e
+
+    def ReadUnapprovedAll(self) -> User:
+        try:
+            return self.db.query(User).filter(User.approved == 0).all()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def ReadActiveAll(self) -> User:
+        try:
+            return self.db.query(User).filter(User.enabled == 1).all()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def ReadInactiveAll(self) -> User:
+        try:
+            return self.db.query(User).filter(User.enabled == 0).all()
+        except Exception as e:
+            self.db.rollback()
+            raise e
