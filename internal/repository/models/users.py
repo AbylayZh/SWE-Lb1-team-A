@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, ForeignKey, String
-from sqlalchemy import DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -27,6 +26,9 @@ class User(Base):
     buyer = relationship('Buyer', back_populates='user', uselist=False)
 
     role: str
+
+    # Relationship to Image
+    images = relationship('Image', back_populates='user')
 
 
 class Admin(Base):
@@ -57,3 +59,29 @@ class Buyer(Base):
     # preferred_payment_id = Column(Integer, ForeignKey('payment_types.id'), nullable=False)
 
     user = relationship('User', back_populates='buyer')
+
+
+class Image(Base):
+    __tablename__ = 'images'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationship to User
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user = relationship('User', back_populates='images')
+
+class Product(Base):
+    __tablename__ = 'products'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    price = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Example relationship (optional, depending on requirements)
+    image_id = Column(Integer, ForeignKey('images.id'), nullable=True)
+    image = relationship('Image')

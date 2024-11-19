@@ -15,8 +15,13 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 info_log.setLevel(logging.INFO)
 error_log.setLevel(logging.ERROR)
 
+import os
+
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+
 # Configure file logging if needed
-file_handler = logging.FileHandler("/tmp/info.log")
+file_handler = logging.FileHandler("logs/info.log")
 file_handler.setLevel(logging.INFO)
 info_log.addHandler(file_handler)
 error_log.addHandler(file_handler)

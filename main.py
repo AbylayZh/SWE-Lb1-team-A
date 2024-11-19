@@ -6,6 +6,8 @@ from internal.handlers.buyer import router as buyer_router
 from internal.handlers.errors import ValidationErrorHandler
 from internal.handlers.farmer import router as farmer_router
 from internal.handlers.user import router as user_router
+from internal.handlers.image import router as image_router
+from internal.handlers.product import router as product_router
 from internal.service.services import services
 from pkg.middleware.middleware import Authenticate, VerifyAuthentication
 
@@ -22,3 +24,7 @@ app.include_router(farmer_router)
 app.include_router(buyer_router)
 
 app.include_router(home_router)
+
+app.include_router(image_router)
+
+app.include_router(product_router)
