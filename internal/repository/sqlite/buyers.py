@@ -1,7 +1,6 @@
-import bcrypt
 from sqlalchemy.orm import Session
 
-from internal.repository.models.users import User, Farmer, Buyer, Admin
+from internal.repository.models.users import Buyer
 
 
 class BuyerRepository:
@@ -13,7 +12,7 @@ class BuyerRepository:
             new_buyer = Buyer(
                 user_id=user_id,
                 delivery_address=address,
-                preferred_payment=payment
+                preferred_payment_id=payment
             )
 
             self.db.add(new_buyer)

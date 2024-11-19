@@ -20,7 +20,7 @@ class User(Base):
     password = Column(String, nullable=False)
     created = Column(DateTime, default=datetime.utcnow)
     approved = Column(Integer, nullable=False, default=0)
-    enabled = Column(Integer, nullable=False, default=1)
+    active = Column(Integer, nullable=False, default=1)
 
     admin = relationship('Admin', back_populates='user', uselist=False)
     farmer = relationship('Farmer', back_populates='user', uselist=False)
@@ -53,6 +53,7 @@ class Buyer(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     delivery_address = Column(String, nullable=False)
-    preferred_payment_id = Column(Integer, ForeignKey('payment_types.id'), nullable=False)
+    preferred_payment_id = Column(Integer, nullable=False)
+    # preferred_payment_id = Column(Integer, ForeignKey('payment_types.id'), nullable=False)
 
     user = relationship('User', back_populates='buyer')

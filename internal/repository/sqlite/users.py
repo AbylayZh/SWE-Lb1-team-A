@@ -78,14 +78,14 @@ class UserRepository:
 
     def ReadActiveAll(self) -> User:
         try:
-            return self.db.query(User).filter(User.enabled == 1).all()
+            return self.db.query(User).filter(User.active == 1).all()
         except Exception as e:
             self.db.rollback()
             raise e
 
     def ReadInactiveAll(self) -> User:
         try:
-            return self.db.query(User).filter(User.enabled == 0).all()
+            return self.db.query(User).filter(User.active == 0).all()
         except Exception as e:
             self.db.rollback()
             raise e

@@ -15,7 +15,8 @@ class SignupRequest(BaseModel):
 
 
 class FarmerSignupRequest(SignupRequest):
-    farm_location: str
+    farm_size: int
+    farm_address: str
 
 
 class BuyerSignupRequest(SignupRequest):

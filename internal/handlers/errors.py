@@ -1,7 +1,7 @@
 import traceback
-from http import HTTPStatus, HTTPMethod
+from http import HTTPStatus
 
-from fastapi import Request, HTTPException
+from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -10,30 +10,30 @@ from sqlalchemy.exc import IntegrityError
 from internal.config.logger import error_log
 
 
-def ClientErrorHandler(err: HTTPStatus, exc, request=None):
+def ClientErrorHandler(err: HTTPStatus, exc, user=None, request=None):
     return JSONResponse(
         status_code=err.value,
         content={
             "message": err.phrase,
             "details": exc,
             "request": request,
+            "auth_user": user,
         }
     )
 
 
-async def ValidationErrorHandler(req: Request, exc: RequestValidationError):
+async def ValidationErrorHandler(req: Request, exc: RequestValidationError, user=None):
     try:
         body = await req.json()
         body.pop("password", None)
 
-        return ClientErrorHandler(HTTPStatus.UNPROCESSABLE_ENTITY, exc.errors(), body)
+        return ClientErrorHandler(HTTPStatus.UNPROCESSABLE_ENTITY, exc.errors(), user, body)
     except Exception as e:
-        return InternalServerHandler(e,error_log)
+        return InternalServerHandler(e, error_log)
 
 
-
-def ConflictErrorHandler(req: BaseModel, exc: IntegrityError):
-    return ClientErrorHandler(HTTPStatus.CONFLICT, str(exc.orig), req.dict(exclude={"password"}))
+def ConflictErrorHandler(req: BaseModel, exc: IntegrityError, user=None):
+    return ClientErrorHandler(HTTPStatus.CONFLICT, str(exc.orig), user, req.dict(exclude={"password"}))
 
 
 def InternalServerHandler(exc: Exception, errorLog):

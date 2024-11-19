@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 
+from internal.handlers.admin import router as home_router
 from internal.handlers.buyer import router as buyer_router
 from internal.handlers.errors import ValidationErrorHandler
 from internal.handlers.farmer import router as farmer_router
-from internal.handlers.home import router as home_router
 from internal.handlers.user import router as user_router
 from internal.service.services import services
 from pkg.middleware.middleware import Authenticate, VerifyAuthentication

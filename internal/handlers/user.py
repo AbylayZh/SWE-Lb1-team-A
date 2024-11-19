@@ -22,7 +22,7 @@ async def UserLoginPost(req: LoginRequest, resp: Response, service: Services = D
         resp.set_cookie(key="session_id", value=session_id, secure=True, httponly=True, samesite="lax")
         return {"message": "OK", "redirect_url": "/"}
     except InvalidCredentialsError as e:
-        return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, str(e), req.dict(exclude={"password"}))
+        return ClientErrorHandler(err=HTTPStatus.UNAUTHORIZED, exc=str(e), request=req.dict(exclude={"password"}))
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)
 
@@ -48,7 +48,7 @@ async def UserPasswordUpdate(id: int, req: Request, resp: Response, service: Ser
 
 
 @router.post("/signup/admin")
-def FarmerSignupPost(req: SignupRequest, response: Response, service: Services = Depends(services)):
+def AdminSignupPost(req: SignupRequest, response: Response, service: Services = Depends(services)):
     try:
         with service.db_session.begin():
             user_id = service.user_service.Register(req)

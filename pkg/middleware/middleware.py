@@ -7,6 +7,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from internal.handlers.errors import InternalServerHandler, ClientErrorHandler
 from internal.repository.models.errors import RoleAuthenticationError, UserAuthenticationError
 from internal.service.services import Services
+from internal.service.user.json import UserJson
 
 
 class BaseServiceMiddleware(BaseHTTPMiddleware):
@@ -57,23 +58,21 @@ class VerifyAuthentication(BaseServiceMiddleware):
 
         user = getattr(request.state, 'user', None)
         if user:
-            if user.approved == 0:
-                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed",
-                                          {"User_ID": user.id, "User_Role": user.role, "Approved": user.approved})
+            if user.approved == 0 or user.active == 0:
+                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed", UserJson(user))
 
             # Prevent logged-in users from accessing /login or /signup
             if request.url.path.startswith("/login") or request.url.path.startswith("/signup"):
-                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Authenticated", f"User_ID: {user.id}")
+                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Authenticated", UserJson(user))
 
             # Ensure user can access only role-specific endpoints
             if request.url.path.startswith("/user"):
                 if not (request.url.path.startswith("/") or request.url.path.startswith(
                         f"/user/{user.role}")):
-                    return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed",
-                                              {"User_ID": user.id, "User_Role": user.role, "Approved": user.approved})
+                    return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed", UserJson(user))
         else:
             # Prevent unauthenticated users from accessing /user endpoints
             if request.url.path.startswith("/user"):
-                return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, "User Not Authenticated", f"User_ID: None")
+                return ClientErrorHandler(HTTPStatus.UNAUTHORIZED, "User Not Authenticated", UserJson(user))
 
         return response
