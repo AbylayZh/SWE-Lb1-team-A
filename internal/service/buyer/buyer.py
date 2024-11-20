@@ -10,6 +10,6 @@ class BuyerService:
 
     def Register(self, user_id, req: BuyerSignupRequest):
         try:
-            self.buyer_repository.Create(user_id, req.delivery_address, req.preferred_payment)
+            self.buyer_repository.Create(user_id, req.delivery_address.title(), req.preferred_payment)
         except Exception as e:
             raise e
