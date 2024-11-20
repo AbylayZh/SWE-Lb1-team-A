@@ -69,21 +69,45 @@ class UserRepository:
             self.db.rollback()
             raise e
 
-    def ReadUnapprovedAll(self) -> User:
+    def UpdateApproved(self, user_id: int, new_approved: int):
+        try:
+            user = self.db.query(User).filter_by(id=user_id).first()
+            if user:
+                user.approved = new_approved  # Update the password field
+                self.db.commit()  # Commit the change to the database
+            else:
+                raise NotFoundError()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def UpdateActive(self, user_id: int, new_active: int):
+        try:
+            user = self.db.query(User).filter_by(id=user_id).first()
+            if user:
+                user.active = new_active  # Update the password field
+                self.db.commit()  # Commit the change to the database
+            else:
+                raise NotFoundError()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def ReadUnapprovedAll(self):
         try:
             return self.db.query(User).filter(User.approved == 0).all()
         except Exception as e:
             self.db.rollback()
             raise e
 
-    def ReadActiveAll(self) -> User:
+    def ReadActiveAll(self):
         try:
             return self.db.query(User).filter(User.active == 1).all()
         except Exception as e:
             self.db.rollback()
             raise e
 
-    def ReadInactiveAll(self) -> User:
+    def ReadInactiveAll(self):
         try:
             return self.db.query(User).filter(User.active == 0).all()
         except Exception as e:

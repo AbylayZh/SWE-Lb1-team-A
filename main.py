@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 
-from internal.handlers.admin import router as home_router
+from internal.handlers.admin import router as admin_router
 from internal.handlers.buyer import router as buyer_router
 from internal.handlers.errors import ValidationErrorHandler
 from internal.handlers.farmer import router as farmer_router
@@ -18,7 +18,6 @@ app.add_middleware(Authenticate, services=services)
 app.add_middleware(VerifyAuthentication, services=services)
 
 app.include_router(user_router)
+app.include_router(admin_router)
 app.include_router(farmer_router)
 app.include_router(buyer_router)
-
-app.include_router(home_router)

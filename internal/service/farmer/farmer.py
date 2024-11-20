@@ -10,6 +10,6 @@ class FarmerService:
 
     def Register(self, user_id, req: FarmerSignupRequest):
         try:
-            self.farmer_repository.Create(user_id)
+            return self.farmer_repository.Create(user_id)
         except Exception as e:
             raise e

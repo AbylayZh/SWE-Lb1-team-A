@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
-Base.__allow_unmapped__ = True  # Enable allow_unmapped for all models
+Base.__allow_unmapped__ = True
 
 
 class User(Base):

@@ -67,7 +67,7 @@ class VerifyAuthentication(BaseServiceMiddleware):
 
             # Ensure user can access only role-specific endpoints
             if request.url.path.startswith("/user"):
-                if not (request.url.path.startswith("/") or request.url.path.startswith(
+                if not (request.url.path.startswith("/user/logout") or request.url.path.startswith(
                         f"/user/{user.role}")):
                     return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed", UserJson(user))
         else:

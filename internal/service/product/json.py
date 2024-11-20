@@ -14,5 +14,4 @@ def UserJson(user: User):
         "created": user.created.strftime("%d %b %Y %H:%M:%S"),
         "approved": user.approved,
         "active": user.active,
-        "role": user.role,
     }

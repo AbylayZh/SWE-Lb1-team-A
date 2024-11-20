@@ -37,7 +37,7 @@ async def UserLogout(req: Request, resp: Response, service: Services = Depends(s
 
 
 @router.put("/user/update-password/{id}")
-async def UserPasswordUpdate(id: int, req: Request, resp: Response, service: Services = Depends(services)):
+def UserPasswordUpdate(id: int, req: Request, resp: Response, service: Services = Depends(services)):
     try:
         service.user_service.UpdatePassword(id, req.get("password"))
 

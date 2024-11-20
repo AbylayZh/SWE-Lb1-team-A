@@ -41,25 +41,49 @@ class UserService:
         except Exception as e:
             raise e
 
+    def Delete(self, user_id):
+        try:
+            self.user_repository.Delete(user_id)
+        except Exception as e:
+            raise e
+
     def UpdatePassword(self, user_id: int, password: str) -> int:
         try:
             return self.user_repository.UpdatePassword(user_id, password)
         except Exception as e:
             raise e
 
-    def GetUnapprovedAll(self) -> User:
+    def Approve(self, user_id: int):
+        try:
+            self.user_repository.UpdateApproved(user_id, 1)
+        except Exception as e:
+            raise e
+
+    def Enable(self, user_id: int):
+        try:
+            self.user_repository.UpdateActive(user_id, 1)
+        except Exception as e:
+            raise e
+
+    def Disable(self, user_id: int):
+        try:
+            self.user_repository.UpdateActive(user_id, 0)
+        except Exception as e:
+            raise e
+
+    def GetUnapprovedAll(self):
         try:
             return self.user_repository.ReadUnapprovedAll()
         except Exception as e:
             raise e
 
-    def GetActiveAll(self) -> User:
+    def GetActiveAll(self):
         try:
             return self.user_repository.ReadActiveAll()
         except Exception as e:
             raise e
 
-    def GetInactiveAll(self) -> User:
+    def GetInactiveAll(self):
         try:
             return self.user_repository.ReadInactiveAll()
         except Exception as e:

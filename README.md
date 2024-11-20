@@ -1,5 +1,14 @@
 # SWE-team-A
 
+## Admin Credentials
+
+```json
+{
+  "email": "admin@mail.com",
+  "password": "12345"
+}
+ ```
+
 ## Endpoints
 
 ### Service: Users
@@ -75,6 +84,29 @@
   {
     "message": "OK",
     "redirect_url": "/"
+  }
+  ```
+
+### Service: Products (Farmers)
+
+- **POST /user/farmer/products/create**:
+    - Request:
+  ```json
+  {
+    "name": string,
+    "description": string,
+    "price": int,
+    "category_id": int,
+    "quantity": int,
+    "weight": float
+  }
+  ```
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK",
+    "redirect_url": "/user/farmer/products/{product_id}",
+    "authenticated_user": dict{"first_name": "...",...} or null
   }
   ```
 

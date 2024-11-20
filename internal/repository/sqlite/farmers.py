@@ -1,7 +1,6 @@
-import bcrypt
 from sqlalchemy.orm import Session
 
-from internal.repository.models.users import User, Farmer, Buyer, Admin
+from internal.repository.models.users import Farmer
 
 
 class FarmerRepository:
@@ -15,7 +14,10 @@ class FarmerRepository:
             )
 
             self.db.add(new_farmer)
-            self.db.commit()
+            # self.db.commit()
+            self.db.flush()
+
+            return new_farmer.id
         except Exception as e:
             self.db.rollback()
             raise e
