@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import APIRouter
-from fastapi import Depends, Response
+from fastapi import Depends, Response, Request
 from sqlalchemy.exc import IntegrityError
 
 from internal.handlers.errors import ConflictErrorHandler, InternalServerHandler
@@ -22,5 +22,31 @@ def BuyerSignupPost(req: BuyerSignupRequest, response: Response, service: Servic
             return {"message": "OK", "redirect_url": "/user/login"}
     except IntegrityError as err:
         return ConflictErrorHandler(req, err)
+    except Exception as err:
+        return InternalServerHandler(err, service.loggers.errorLog)
+
+
+@router.get("/user/buyer/products")
+def ProductsHandler(req: Request, service: Services = Depends(services)):
+    """
+    try:
+        user = getattr(req.state, 'user', None)
+        products = service.product_service.GetAllByFarmerID(user.farmer.id)
+        response = {"products": products}
+
+        return service.render(req, response)
+    except Exception as e:
+        return InternalServerHandler(e, service.loggers.errorLog)
+    """
+
+
+@router.get("/user/buyer/products/{id}")
+def GetProduct(id: int, request: Request, service: Services = Depends(services)):
+    try:
+        product = service.product_service.Get(id)
+        images = service.image_service.GetAllByProductID(product.id)
+
+        resp = {"product": product, "images": images}
+        return service.render(request, resp)
     except Exception as err:
         return InternalServerHandler(err, service.loggers.errorLog)

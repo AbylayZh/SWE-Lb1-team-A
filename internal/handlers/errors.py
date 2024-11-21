@@ -17,7 +17,7 @@ def ClientErrorHandler(err: HTTPStatus, exc, user=None, request=None):
             "message": err.phrase,
             "details": exc,
             "request": request,
-            "auth_user": user,
+            "authenticated_user": user,
         }
     )
 

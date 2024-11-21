@@ -1,26 +1,27 @@
+import os
+from typing import List
+
+from fastapi import UploadFile
+
 from internal.repository.sqlite.images import ImageRepository
 
 
 class ImageService:
-    def __init__(self, repository: ImageRepository):
-        self.repository = repository
+    def __init__(self, db):
+        self.image_repository = ImageRepository(db)
 
-    def get_all_images(self):
-        """Fetch all images."""
-        return self.repository.get_all()
+    def GetAllByProductID(self, product_id: int):
+        return self.image_repository.ReadAllByProductID(product_id)
 
-    def get_image_by_id(self, image_id: int):
-        """Fetch an image by its ID."""
-        return self.repository.get_by_id(image_id)
+    def Upload(self, product_id: int, path: str):
+        self.image_repository.Create(product_id, path)
 
-    def create_image(self, image_data: dict):
-        """Create a new image."""
-        return self.repository.create(image_data)
+    async def UploadMultiple(self, product_id: int, files: List[UploadFile]):
+        for file in files:
+            file_location = f"/uploaded_images/product_id_{product_id}/{file.filename}"
+            os.makedirs(os.path.dirname(file_location), exist_ok=True)
 
-    def update_image(self, image_id: int, image_data: dict):
-        """Update an existing image."""
-        return self.repository.update(image_id, image_data)
+            with open(file_location, "wb") as f:
+                f.write(await file.read())
 
-    def delete_image(self, image_id: int):
-        """Delete an image by its ID."""
-        return self.repository.delete(image_id)
+            self.Upload(product_id, file_location)

@@ -17,7 +17,8 @@ class ProductService:
 
     def Create(self, farmer_id: int, product_data: ProductRequest):
         try:
-            return self.product_repository.Create(farmer_id, product_data.dict())
+            name, description, price, category_id, quantity, weight = product_data.name, product_data.description, product_data.price, product_data.category_id, product_data.quantity, product_data.weight
+            return self.product_repository.Create(farmer_id, name, description, price, category_id, quantity, weight)
         except Exception as e:
             raise e
 

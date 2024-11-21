@@ -12,7 +12,7 @@ Base.__allow_unmapped__ = True
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
@@ -41,10 +41,12 @@ class Admin(Base):
 class Farmer(Base):
     __tablename__ = 'farmers'
 
-    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
+    # Relationships
     user = relationship('User', back_populates='farmer')
+    # products = relationship('Product', back_populates='farmer')
 
 
 class Buyer(Base):

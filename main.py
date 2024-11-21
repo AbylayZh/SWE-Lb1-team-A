@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 
 from internal.handlers.admin import router as admin_router
 from internal.handlers.buyer import router as buyer_router
@@ -10,6 +11,8 @@ from internal.service.services import services
 from pkg.middleware.middleware import Authenticate, VerifyAuthentication
 
 app = FastAPI()
+
+app.mount("/uploaded_images", StaticFiles(directory="./uploaded_images"), name="uploaded_images")
 
 app.add_exception_handler(RequestValidationError, ValidationErrorHandler)
 

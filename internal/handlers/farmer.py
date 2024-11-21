@@ -1,7 +1,8 @@
 from http import HTTPStatus
+from typing import List
 
 from fastapi import APIRouter
-from fastapi import Depends, Response, Request
+from fastapi import Depends, Response, Request, UploadFile, File
 from sqlalchemy.exc import IntegrityError
 
 from internal.handlers.errors import ConflictErrorHandler, InternalServerHandler
@@ -13,7 +14,8 @@ router = APIRouter()
 
 
 @router.post("/signup/farmer")
-def FarmerSignupPost(req: FarmerSignupRequest, response: Response, service: Services = Depends(services)):
+def FarmerSignupPost(req: FarmerSignupRequest, response: Response,
+                     service: Services = Depends(services)):
     try:
         with service.db_session.begin():
             user_id = service.user_service.Register(req)
@@ -41,10 +43,14 @@ def ProductsHandler(req: Request, service: Services = Depends(services)):
 
 
 @router.post("/user/farmer/products/create")
-def CreateProduct(request: Request, req: ProductRequest, response: Response, service: Services = Depends(services)):
+async def CreateProduct(request: Request, response: Response, service: Services = Depends(services),
+                        files: List[UploadFile] = File(...)):
     try:
+        form_data = await request.form()
+
         user = getattr(request.state, 'user', None)
-        product_id = service.product_service.Create(user.farmer.id, req)
+        product_id = service.product_service.Create(user.farmer.id, ProductRequest(**form_data))
+        await service.image_service.UploadMultiple(product_id, files)
 
         response.status_code = HTTPStatus.SEE_OTHER.value
         resp = {"message": "OK", "redirect_url": f"/user/farmer/products/{product_id}"}
@@ -57,8 +63,9 @@ def CreateProduct(request: Request, req: ProductRequest, response: Response, ser
 def GetProduct(id: int, request: Request, service: Services = Depends(services)):
     try:
         product = service.product_service.Get(id)
+        images = service.image_service.GetAllByProductID(product.id)
 
-        resp = {"product": product}
+        resp = {"product": product, "images": images}
         return service.render(request, resp)
     except Exception as err:
         return InternalServerHandler(err, service.loggers.errorLog)

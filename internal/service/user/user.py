@@ -28,10 +28,11 @@ class UserService:
 
     def Register(self, req: SignupRequest) -> int:
         first_name, last_name, email, phone, password = req.first_name, req.last_name, req.email, req.phone, req.password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         try:
             return self.user_repository.Create(first_name.capitalize(), last_name.capitalize(), email.lower(), phone,
-                                               password)
+                                               hashed_password)
         except Exception as e:
             raise e
 

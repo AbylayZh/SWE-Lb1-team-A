@@ -6,6 +6,7 @@ from internal.service.admin.admin import AdminService
 from internal.service.buyer.buyer import BuyerService
 from internal.service.farm.farm import FarmService
 from internal.service.farmer.farmer import FarmerService
+from internal.service.image.image import ImageService
 from internal.service.product.product import ProductService
 from internal.service.user.json import UserJson
 from internal.service.user.user import UserService
@@ -33,6 +34,7 @@ class Services:
         self.farm_service = FarmService(db)
         self.buyer_service = BuyerService(db)
         self.product_service = ProductService(db)
+        self.image_service = ImageService(db)
 
         return self
 

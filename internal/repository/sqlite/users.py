@@ -1,4 +1,3 @@
-import bcrypt
 from sqlalchemy.orm import Session
 
 from internal.repository.models.errors import NotFoundError
@@ -11,14 +10,12 @@ class UserRepository:
 
     def Create(self, first_name, last_name, email, phone, password) -> int:
         try:
-            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
             new_user = User(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
                 phone_number=phone,
-                password=hashed_password
+                password=password
             )
 
             self.db.add(new_user)

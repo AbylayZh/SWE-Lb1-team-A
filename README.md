@@ -118,7 +118,7 @@
     "message": string,
     "details": string,
     "request": dict{"...": "...",...} or null,
-    "auth_user": dict{"...": "...",...} or null
+    "authenticated_user": dict{"first_name": "...",...} or null
   }
   ```
 

@@ -22,12 +22,20 @@ class ProductRepository:
             self.db.rollback()
             raise e
 
-    def Create(self, farmer_id: int, product_data: dict):
+    def Create(self, farmer_id: int, name: str, description: str, price: int, category_id: int, quantity: int,
+               weight: float):
         try:
-            product_data['farmer_id'] = farmer_id
-            product = Product(**product_data)
+            product = Product(
+                farmer_id=farmer_id,
+                name=name,
+                description=description,
+                price=price,
+                category_id=category_id,
+                quantity=quantity,
+                weight=weight,
+            )
             self.db.add(product)
-            self.db.commit()
+            # self.db.commit()
             self.db.flush()
 
             return product.id
