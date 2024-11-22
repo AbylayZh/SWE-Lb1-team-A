@@ -46,7 +46,8 @@ class Farmer(Base):
 
     # Relationships
     user = relationship('User', back_populates='farmer')
-    # products = relationship('Product', back_populates='farmer')
+    product = relationship('Product', back_populates='farmer', uselist=False)
+    farm = relationship('Farm', back_populates='farmer', uselist=False)
 
 
 class Buyer(Base):
@@ -55,7 +56,8 @@ class Buyer(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     delivery_address = Column(String, nullable=False)
-    preferred_payment_id = Column(Integer, nullable=False)
-    # preferred_payment_id = Column(Integer, ForeignKey('payment_types.id'), nullable=False)
+    # preferred_payment_id = Column(Integer, nullable=False)
+    preferred_payment_id = Column(Integer, ForeignKey('payment_types.id'), nullable=False)
 
     user = relationship('User', back_populates='buyer')
+    payment_type = relationship('PaymentType', back_populates='buyer')

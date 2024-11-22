@@ -30,62 +30,58 @@ class UserRepository:
 
     def ReadByEmail(self, email: str) -> User:
         try:
-            return self.db.query(User).filter(User.email == email).first()
+            user = self.db.query(User).filter(User.email == email).first()
+            if user:
+                return user
+            else:
+                raise NotFoundError()
         except Exception as e:
             self.db.rollback()
             raise e
 
     def ReadByID(self, id: int) -> User:
         try:
-            return self.db.query(User).filter(User.id == id).first()
+            user = self.db.query(User).filter(User.id == id).first()
+            if user:
+                return user
+            else:
+                raise NotFoundError()
         except Exception as e:
             self.db.rollback()
             raise e
 
     def Delete(self, user_id: int):
         try:
-            user = self.db.query(User).filter_by(id=user_id).first()
-            if user:
-                self.db.delete(user)  # Mark the user for deletion
-                self.db.commit()  # Commit to apply the deletion
-            else:
-                raise NotFoundError()
+            user = self.ReadByID(user_id)
+            self.db.delete(user)  # Mark the user for deletion
+            self.db.commit()  # Commit to apply the deletion
         except Exception as e:
             self.db.rollback()
             raise e
 
     def UpdatePassword(self, user_id: int, new_password: str):
         try:
-            user = self.db.query(User).filter_by(id=user_id).first()
-            if user:
-                user.password = new_password  # Update the password field
-                self.db.commit()  # Commit the change to the database
-            else:
-                raise NotFoundError()
+            user = self.ReadByID(user_id)
+            user.password = new_password  # Update the password field
+            self.db.commit()  # Commit the change to the database
         except Exception as e:
             self.db.rollback()
             raise e
 
     def UpdateApproved(self, user_id: int, new_approved: int):
         try:
-            user = self.db.query(User).filter_by(id=user_id).first()
-            if user:
-                user.approved = new_approved  # Update the password field
-                self.db.commit()  # Commit the change to the database
-            else:
-                raise NotFoundError()
+            user = self.ReadByID(user_id)
+            user.approved = new_approved  # Update the password field
+            self.db.commit()  # Commit the change to the database
         except Exception as e:
             self.db.rollback()
             raise e
 
     def UpdateActive(self, user_id: int, new_active: int):
         try:
-            user = self.db.query(User).filter_by(id=user_id).first()
-            if user:
-                user.active = new_active  # Update the password field
-                self.db.commit()  # Commit the change to the database
-            else:
-                raise NotFoundError()
+            user = self.ReadByID(user_id)
+            user.active = new_active  # Update the password field
+            self.db.commit()  # Commit the change to the database
         except Exception as e:
             self.db.rollback()
             raise e

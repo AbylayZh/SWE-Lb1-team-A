@@ -1,7 +1,7 @@
 import bcrypt
 from sqlalchemy.orm import Session
 
-from internal.repository.models.errors import InvalidCredentialsError
+from internal.repository.models.errors import InvalidCredentialsError, NotFoundError
 from internal.repository.models.users import User
 from internal.repository.sqlite.users import UserRepository
 from internal.validators.users import LoginRequest, SignupRequest
@@ -11,18 +11,18 @@ class UserService:
     def __init__(self, db: Session):
         self.user_repository = UserRepository(db)
 
-    def Authenticate(self, req: LoginRequest) -> int:
+    def Authenticate(self, req: LoginRequest) -> User:
         email, password = req.email, req.password
 
         try:
             user = self.user_repository.ReadByEmail(email)
-            if not user:
-                raise InvalidCredentialsError()
 
             if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
                 raise InvalidCredentialsError()
 
-            return user.id
+            return user
+        except NotFoundError:
+            raise InvalidCredentialsError()
         except Exception as e:
             raise e
 

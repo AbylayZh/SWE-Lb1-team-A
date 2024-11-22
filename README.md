@@ -14,7 +14,7 @@
 ### Service: Users
 
 - **POST /login**:
-    - Request:
+    - Request (JSON):
   ```json
   {
     "email": string,
@@ -32,7 +32,7 @@
 
 
 - **POST /signup/farmer**:
-    - Request:
+    - Request (JSON):
   ```json
   {
     "first_name": string,
@@ -48,14 +48,14 @@
   ```json
   {
     "message": "OK",
-    "redirect_url": "/user/login"
+    "redirect_url": "/login"
   }
   ```
     - Errors: 409, 422
 
 
 - **POST /signup/buyer**:
-    - Request:
+    - Request (JSON):
   ```json
   {
     "first_name": string,
@@ -71,7 +71,7 @@
   ```json
   {
     "message": "OK",
-    "redirect_url": "/user/login"
+    "redirect_url": "/login"
   }
   ```
     - Errors: 409, 422
@@ -87,10 +87,97 @@
   }
   ```
 
-### Service: Products (Farmers)
+### Service: Admin
 
-- **POST /user/farmer/products/create**:
-    - Request:
+- **GET /user/role/admin/users/pending**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "unapproved_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+  }
+  ```
+
+- **GET /user/role/admin/users/active**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "active_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+  }
+  ```
+
+- **GET /user/role/admin/users/inactive**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "inactive_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+  }
+  ```
+
+- **GET /user/role/admin/users/{id}**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "user": dict{"first_name": "...", "last_name": "...", ...}
+  }
+  ```
+
+- **DELETE "/user/role/admin/users/delete/{id}"**:
+    - Request: None
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK", 
+    "redirect_url": "/user/role/admin/users/pending"
+  }
+  ```
+
+- **PUT /user/role/admin/users/approve/{id}**:
+    - Request: None
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK", 
+    "redirect_url": "/user/role/admin/users/pending"
+  }
+  ```
+
+- **PUT /user/role/admin/users/enable/{id}**:
+    - Request: None
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK", 
+    "redirect_url": "/user/role/admin/users/inactive"
+  }
+  ```
+
+- **PUT /user/role/admin/users/disable/{id}**:
+    - Request: None
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK", 
+    "redirect_url": "/user/role/admin/users/active"
+  }
+  ```
+
+### Service: Farmers / Products
+
+- **GET /user/role/farmer/products**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "products": List[dict{"id": "...", "name": "...", "description": "...", ...}]
+  }
+  ```
+
+- **POST /user/role/farmer/products/create**:
+    - Request (form-data):
   ```json
   {
     "name": string,
@@ -98,15 +185,57 @@
     "price": int,
     "category_id": int,
     "quantity": int,
-    "weight": float
+    "weight": float,
+    "files": List[file_type]
   }
   ```
     - Response (303 Redirect):
   ```json
   {
     "message": "OK",
-    "redirect_url": "/user/farmer/products/{product_id}",
-    "authenticated_user": dict{"first_name": "...",...} or null
+    "redirect_url": "/user/role/farmer/products/{product_id}",
+    "authenticated_user": dict{"first_name": "...", "last_name": "...", ...} or null
+  }
+  ```
+
+- **GET /user/role/farmer/products/{id}**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "product": dict{"id": "...", "name": "...", "description": "...", ...}, 
+    "images": List[image{"id": "...", "path": "...", ...}]
+  }
+  ```
+
+- **DELETE /user/role/farmer/products/delete/{id}**:
+    - Request: None
+    - Response (303 Redirect):
+  ```json
+  {
+    "message": "OK", 
+    "redirect_url": "/user/role/farmer/products"
+  }
+  ```
+
+### Service: Buyers / Products
+
+- **GET /user/role/buyer/products**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "products": List[dict{"id": "...", "name": "...", "description": "...", ...}]
+  }
+  ```
+
+- **GET /user/role/buyer/products/{id}**:
+    - Request: None
+    - Response (200 OK):
+  ```json
+  {
+    "product": dict{"id": "...", "name": "...", "description": "...", ...}, 
+    "images": List[image{"id": "...", "path": "...", ...}]
   }
   ```
 
@@ -117,8 +246,8 @@
   {
     "message": string,
     "details": string,
-    "request": dict{"...": "...",...} or null,
-    "authenticated_user": dict{"first_name": "...",...} or null
+    "request": dict{"...": "...", ...} or null,
+    "authenticated_user": dict{"first_name": "...", "last_name": "...", ...} or null
   }
   ```
 

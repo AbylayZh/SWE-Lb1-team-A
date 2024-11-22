@@ -12,18 +12,25 @@ class ProductService:
         except Exception as e:
             raise e
 
+    def GetAll(self):
+        try:
+            return self.product_repository.ReadAll()
+        except Exception as e:
+            raise e
+
     def Get(self, product_id: int):
-        return self.product_repository.Read(product_id)
+        try:
+            return self.product_repository.Read(product_id)
+        except Exception as e:
+            raise e
 
     def Create(self, farmer_id: int, product_data: ProductRequest):
         try:
             name, description, price, category_id, quantity, weight = product_data.name, product_data.description, product_data.price, product_data.category_id, product_data.quantity, product_data.weight
-            return self.product_repository.Create(farmer_id, name, description, price, category_id, quantity, weight)
+            return self.product_repository.Create(farmer_id, name.capitalize(), description.capitalize(), price,
+                                                  category_id, quantity, weight)
         except Exception as e:
             raise e
-
-    def update_product(self, product_id: int, product_data: dict):
-        return self.repository.update(product_id, product_data)
 
     def Delete(self, product_id: int):
         try:

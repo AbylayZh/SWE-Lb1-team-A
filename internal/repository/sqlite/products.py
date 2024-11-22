@@ -17,7 +17,18 @@ class ProductRepository:
 
     def Read(self, product_id: int):
         try:
-            return self.db.query(Product).filter(Product.id == product_id).first()
+            product = self.db.query(Product).filter(Product.id == product_id).first()
+            if product:
+                return product
+            else:
+                raise NotFoundError()
+        except Exception as e:
+            self.db.rollback()
+            raise e
+
+    def ReadAll(self):
+        try:
+            return self.db.query(Product).all()
         except Exception as e:
             self.db.rollback()
             raise e
@@ -45,12 +56,9 @@ class ProductRepository:
 
     def Delete(self, product_id: int):
         try:
-            product = self.db.query(Product).filter(Product.id == product_id).first()
-            if product:
-                self.db.delete(product)  # Mark the user for deletion
-                self.db.commit()  # Commit to apply the deletion
-            else:
-                raise NotFoundError()
+            product = self.Read(product_id)
+            self.db.delete(product)  # Mark the user for deletion
+            self.db.commit()  # Commit to apply the deletion
         except Exception as e:
             self.db.rollback()
             raise e

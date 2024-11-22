@@ -1,15 +1,17 @@
 from http import HTTPStatus
 
-from fastapi import Depends, Request, APIRouter, Response
+from fastapi import Depends, Request, APIRouter, Response, HTTPException
 
+from internal.handlers.endpoints import url_pending_users, url_active_users, url_inactive_users, url_admin_users
 from internal.handlers.errors import InternalServerHandler
+from internal.repository.models.errors import NotFoundError
 from internal.service.services import Services, services
 from internal.service.user.json import UserJson
 
 router = APIRouter()
 
 
-@router.get("/user/admin/users/pending")
+@router.get(url_pending_users)
 def PendingUsersHandler(req: Request, service: Services = Depends(services)):
     try:
         unapproved_users = service.user_service.GetUnapprovedAll()
@@ -20,7 +22,7 @@ def PendingUsersHandler(req: Request, service: Services = Depends(services)):
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.get("/user/admin/users/active")
+@router.get(url_active_users)
 def ActiveUsersHandler(req: Request, service: Services = Depends(services)):
     try:
         active_users = service.user_service.GetActiveAll()
@@ -31,7 +33,7 @@ def ActiveUsersHandler(req: Request, service: Services = Depends(services)):
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.get("/user/admin/users/inactive")
+@router.get(url_inactive_users)
 def InactiveUsersHandler(req: Request, service: Services = Depends(services)):
     try:
         inactive_users = service.user_service.GetInactiveAll()
@@ -42,49 +44,70 @@ def InactiveUsersHandler(req: Request, service: Services = Depends(services)):
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.put("/user/admin/users/approve/{id}")
-def ApproveUserHandler(id: int, req: Request, resp: Response, service: Services = Depends(services)):
+@router.get(url_admin_users + "/{id}")
+def GetUserHandler(id: int, req: Request, service: Services = Depends(services)):
     try:
-        service.user_service.Approve(id)
+        user = service.user_service.Get(id)
+        response = {"user": UserJson(user)}
 
-        resp.status_code = HTTPStatus.SEE_OTHER.value
-        response = {"message": "OK", "redirect_url": "/user/admin/users/pending"}
         return service.render(req, response)
+    except NotFoundError:
+        raise HTTPException(status_code=404)
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.delete("/user/admin/users/reject/{id}")
+@router.delete(url_admin_users + "/delete/{id}")
 def DeleteUserHandler(id: int, req: Request, resp: Response, service: Services = Depends(services)):
     try:
         service.user_service.Delete(id)
 
         resp.status_code = HTTPStatus.SEE_OTHER.value
-        response = {"message": "OK", "redirect_url": "/user/admin/users/pending"}
+        response = {"message": "OK", "redirect_url": url_pending_users}
         return service.render(req, response)
+    except NotFoundError:
+        raise HTTPException(status_code=404)
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.put("/user/admin/users/enable/{id}")
+@router.put(url_admin_users + "/approve/{id}")
+def ApproveUserHandler(id: int, req: Request, resp: Response, service: Services = Depends(services)):
+    try:
+        service.user_service.Approve(id)
+
+        resp.status_code = HTTPStatus.SEE_OTHER.value
+        response = {"message": "OK", "redirect_url": url_pending_users}
+        return service.render(req, response)
+    except NotFoundError:
+        raise HTTPException(status_code=404)
+    except Exception as e:
+        return InternalServerHandler(e, service.loggers.errorLog)
+
+
+@router.put(url_admin_users + "/enable/{id}")
 def EnableUserHandler(id: int, req: Request, resp: Response, service: Services = Depends(services)):
     try:
         service.user_service.Enable(id)
 
         resp.status_code = HTTPStatus.SEE_OTHER.value
-        response = {"message": "OK", "redirect_url": "/user/admin/users/inactive"}
+        response = {"message": "OK", "redirect_url": url_inactive_users}
         return service.render(req, response)
+    except NotFoundError:
+        raise HTTPException(status_code=404)
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)
 
 
-@router.put("/user/admin/users/disable/{id}")
+@router.put(url_admin_users + "/disable/{id}")
 def DisableUserHandler(id: int, req: Request, resp: Response, service: Services = Depends(services)):
     try:
         service.user_service.Disable(id)
 
         resp.status_code = HTTPStatus.SEE_OTHER.value
-        response = {"message": "OK", "redirect_url": "/user/admin/users/active"}
+        response = {"message": "OK", "redirect_url": url_active_users}
         return service.render(req, response)
+    except NotFoundError:
+        raise HTTPException(status_code=404)
     except Exception as e:
         return InternalServerHandler(e, service.loggers.errorLog)

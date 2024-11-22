@@ -14,7 +14,7 @@ class FarmService:
         farm_size, farm_address = req.farm_size, req.farm_address
 
         try:
-            self.farm_repository.Create(farmer_id, farm_size, farm_address)
+            self.farm_repository.Create(farmer_id, farm_size, farm_address.title())
         except Exception as e:
             raise e
 

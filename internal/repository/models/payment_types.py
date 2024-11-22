@@ -5,14 +5,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 Base = declarative_base()
+Base.__allow_unmapped__ = True
 
 
-class Category(Base):
-    __tablename__ = 'categories'
+class PaymentType(Base):
+    __tablename__ = 'payment_types'
 
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     name = Column(String, unique=True, nullable=False)
     created = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
-    product = relationship('Product', back_populates='category', uselist=False)
+    buyer = relationship('Buyer', back_populates='payment_type', uselist=False)

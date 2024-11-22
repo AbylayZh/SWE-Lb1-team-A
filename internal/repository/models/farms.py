@@ -9,11 +9,10 @@ class Farm(Base):
     __tablename__ = 'farms'
 
     # Define columns
-    farmId = Column(Integer, primary_key=True, autoincrement=True)
-    farmSize = Column(Integer, nullable=False)
-    farmerId = Column(Integer, ForeignKey('farmers.id'), nullable=False)
-    farmAddress = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    farmer_id = Column(Integer, ForeignKey('farmers.id', ondelete="CASCADE"), nullable=False)
+    size = Column(Integer, nullable=False)
+    address = Column(String, nullable=False)
 
     # Define relationships
-    produce = relationship("Produce", back_populates="farm")  # Assume a `Produce` model exists
-    supervises = relationship("Supervisor", back_populates="farm")  # Assume a `Supervisor` model exists
+    farmer = relationship('Farmer', back_populates='farm')

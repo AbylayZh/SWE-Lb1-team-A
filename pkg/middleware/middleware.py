@@ -59,17 +59,16 @@ class VerifyAuthentication(BaseServiceMiddleware):
         user = getattr(request.state, 'user', None)
         if user:
             if user.approved == 0 or user.active == 0:
-                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed", UserJson(user))
+                return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Not Approved/Active", UserJson(user))
 
             # Prevent logged-in users from accessing /login or /signup
             if request.url.path.startswith("/login") or request.url.path.startswith("/signup"):
                 return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Authenticated", UserJson(user))
 
             # Ensure user can access only role-specific endpoints
-            if request.url.path.startswith("/user"):
-                if not (request.url.path.startswith("/user/logout") or request.url.path.startswith(
-                        f"/user/{user.role}")):
-                    return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Access Not Allowed", UserJson(user))
+            if request.url.path.startswith("/user/role"):
+                if not request.url.path.startswith(f"/user/role/{user.role}"):
+                    return ClientErrorHandler(HTTPStatus.FORBIDDEN, "User Role Not Allowed", UserJson(user))
         else:
             # Prevent unauthenticated users from accessing /user endpoints
             if request.url.path.startswith("/user"):
