@@ -17,8 +17,8 @@
     - Request (JSON):
   ```json
   {
-    "email": string,
-    "password": string
+    "email": 'string',
+    "password": 'string'
   }
   ```
     - Response (303 Redirect):
@@ -35,13 +35,13 @@
     - Request (JSON):
   ```json
   {
-    "first_name": string,
-    "last_name": string,
-    "email": string,
-    "phone": int,
-    "password": string,
-    "farm_size": int,
-    "farm_address": string
+    "first_name": 'string',
+    "last_name": 'string',
+    "email": 'string',
+    "phone": 'int',
+    "password": 'string',
+    "farm_size": 'int',
+    "farm_address": 'string'
   }
   ```
     - Response (303 Redirect):
@@ -58,13 +58,13 @@
     - Request (JSON):
   ```json
   {
-    "first_name": string,
-    "last_name": string,
-    "email": string,
-    "phone": int,
-    "password": string,
-    "delivery_address": str,
-    "preferred_payment": int
+    "first_name": 'string',
+    "last_name": 'string',
+    "email": 'string',
+    "phone": 'int',
+    "password": 'string',
+    "delivery_address": 'str',
+    "preferred_payment": 'int'
   }
   ```
     - Response (303 Redirect):
@@ -94,7 +94,7 @@
     - Response (200 OK):
   ```json
   {
-    "unapproved_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+    "unapproved_users": [{"first_name": "...", "last_name": "...", ...}]
   }
   ```
 
@@ -103,7 +103,7 @@
     - Response (200 OK):
   ```json
   {
-    "active_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+    "active_users": [{"first_name": "...", "last_name": "...", ...}]
   }
   ```
 
@@ -112,7 +112,7 @@
     - Response (200 OK):
   ```json
   {
-    "inactive_users": List[dict{"first_name": "...", "last_name": "...", ...}]
+    "inactive_users": [{"first_name": "...", "last_name": "...", ...}]
   }
   ```
 
@@ -121,7 +121,7 @@
     - Response (200 OK):
   ```json
   {
-    "user": dict{"first_name": "...", "last_name": "...", ...}
+    "user": {"first_name": "...", "last_name": "...", ...}
   }
   ```
 
@@ -172,7 +172,7 @@
     - Response (200 OK):
   ```json
   {
-    "products": List[dict{"id": "...", "name": "...", "description": "...", ...}]
+    "products": [{"id": "...", "name": "...", "description": "...", ...}]
   }
   ```
 
@@ -180,13 +180,13 @@
     - Request (form-data):
   ```json
   {
-    "name": string,
-    "description": string,
-    "price": int,
-    "category_id": int,
-    "quantity": int,
-    "weight": float,
-    "files": List[file_type]
+    "name": 'string',
+    "description": 'string',
+    "price": 'int',
+    "category_id": 'int',
+    "quantity": 'int',
+    "weight": 'float',
+    "files": ['file_type']
   }
   ```
     - Response (303 Redirect):
@@ -194,7 +194,7 @@
   {
     "message": "OK",
     "redirect_url": "/user/role/farmer/products/{product_id}",
-    "authenticated_user": dict{"first_name": "...", "last_name": "...", ...} or null
+    "authenticated_user": {"first_name": "...", "last_name": "...", ...} or null
   }
   ```
 
@@ -203,8 +203,8 @@
     - Response (200 OK):
   ```json
   {
-    "product": dict{"id": "...", "name": "...", "description": "...", ...}, 
-    "images": List[image{"id": "...", "path": "...", ...}]
+    "product": {"id": "...", "name": "...", "description": "...", ...}, 
+    "images": [{"id": "...", "path": "...", ...}]
   }
   ```
 
@@ -225,7 +225,7 @@
     - Response (200 OK):
   ```json
   {
-    "products": List[dict{"id": "...", "name": "...", "description": "...", ...}]
+    "products": [{"id": "...", "name": "...", "description": "...", ...}]
   }
   ```
 
@@ -234,8 +234,8 @@
     - Response (200 OK):
   ```json
   {
-    "product": dict{"id": "...", "name": "...", "description": "...", ...}, 
-    "images": List[image{"id": "...", "path": "...", ...}]
+    "product": {"id": "...", "name": "...", "description": "...", ...}, 
+    "images": [{"id": "...", "path": "...", ...}]
   }
   ```
 
@@ -244,24 +244,24 @@
 - **401 (Unauthorized) / 403 (Forbidden) / 409 (Conflict) / 422 (Unprocessable Entity)**:
   ```json
   {
-    "message": string,
-    "details": string,
-    "request": dict{"...": "...", ...} or null,
-    "authenticated_user": dict{"first_name": "...", "last_name": "...", ...} or null
+    "message": 'string',
+    "details": 'string',
+    "request": {"...": "...", ...} or null,
+    "authenticated_user": {"first_name": "...", "last_name": "...", ...} or null
   }
   ```
 
 - **404 (Not Found) / 405 (Method Not Allowed)**:
   ```json
   {
-    "detail": string
+    "detail": 'string'
   }
   ```
 
 - **500 (Internal Server)**:
   ```json
   {
-    "message": string,
-    "details": string
+    "message": 'string',
+    "details": 'string'
   }
   ```
