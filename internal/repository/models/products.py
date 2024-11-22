@@ -1,11 +1,9 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, Numeric, Text, DateTime, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-Base.__allow_unmapped__ = True
+from internal.repository.models.base import Base
 
 
 class Product(Base):
@@ -26,4 +24,4 @@ class Product(Base):
     # Relationships
     farmer = relationship('Farmer', back_populates='product')
     category = relationship('Category', back_populates='product')
-    image = relationship('image', back_populates='product', uselist=False)
+    image = relationship('Image', back_populates='product', uselist=False)

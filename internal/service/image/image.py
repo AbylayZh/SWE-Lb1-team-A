@@ -18,10 +18,10 @@ class ImageService:
 
     async def UploadMultiple(self, product_id: int, files: List[UploadFile]):
         for file in files:
-            file_location = f"/uploaded_images/product_id_{product_id}/{file.filename}"
+            file_location = f"uploaded_images/product_id_{product_id}/{file.filename}"
             os.makedirs(os.path.dirname(file_location), exist_ok=True)
 
             with open(file_location, "wb") as f:
                 f.write(await file.read())
 
-            self.Upload(product_id, file_location)
+            self.Upload(product_id, "/" + file_location)

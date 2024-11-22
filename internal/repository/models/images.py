@@ -2,11 +2,9 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy import DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-Base.__allow_unmapped__ = True
+from internal.repository.models.base import Base
 
 
 class Image(Base):
@@ -18,4 +16,4 @@ class Image(Base):
     path = Column(String, nullable=True)
     created = Column(DateTime, default=datetime.utcnow)
 
-    product = relationship('product', back_populates='image')
+    product = relationship('Product', back_populates='image')

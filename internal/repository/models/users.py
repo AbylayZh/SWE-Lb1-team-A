@@ -2,11 +2,9 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, ForeignKey, String
 from sqlalchemy import DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-Base.__allow_unmapped__ = True
+from internal.repository.models.base import Base
 
 
 class User(Base):
