@@ -11,6 +11,7 @@ from internal.service.services import services
 from pkg.middleware.middleware import Authenticate, VerifyAuthentication
 
 app = FastAPI()
+# app.mount("/", StaticFiles(directory="react/build", html=True), name="static")
 
 app.mount("/uploaded_images", StaticFiles(directory="./uploaded_images"), name="uploaded_images")
 
