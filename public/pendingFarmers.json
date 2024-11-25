@@ -1,0 +1,21 @@
+[
+    {
+      "first_name": "Alice",
+      "last_name": "Brown",
+      "email": "alice.brown@example.com",
+      "phone": 1234567890,
+      "password": "password1",
+      "farm_size": 50,
+      "farm_address": "123 Pending Street"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "phone": 9876543210,
+      "password": "password2",
+      "farm_size": 100,
+      "farm_address": "456 Pending Lane"
+    }
+]
+  

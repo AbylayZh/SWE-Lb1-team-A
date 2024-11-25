@@ -1,0 +1,48 @@
+[
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "phone": 1234567890,
+      "password": "password123",
+      "farm_size": 100,
+      "farm_address": "123 Farm Lane, Countryville"
+    },
+    {
+      "first_name": "Emily",
+      "last_name": "Clark",
+      "email": "emily.clark@example.com",
+      "phone": 9876543210,
+      "password": "emily2024",
+      "farm_size": 50,
+      "farm_address": "456 Orchard Ave, Greenfield"
+    },
+    {
+      "first_name": "Michael",
+      "last_name": "Smith",
+      "email": "michael.smith@example.com",
+      "phone": 5678901234,
+      "password": "mike_farms",
+      "farm_size": 75,
+      "farm_address": "789 Corn Street, Agritown"
+    },
+    {
+      "first_name": "Linda",
+      "last_name": "Johnson",
+      "email": "linda.johnson@example.com",
+      "phone": 3456789012,
+      "password": "lindafarm456",
+      "farm_size": 120,
+      "farm_address": "321 Wheat Blvd, Harvest City"
+    },
+    {
+      "first_name": "William",
+      "last_name": "Brown",
+      "email": "will.brown@example.com",
+      "phone": 2345678901,
+      "password": "farmking789",
+      "farm_size": 200,
+      "farm_address": "555 Potato Road, Cropland"
+    }
+  ]
+  
