@@ -27,7 +27,7 @@ class SessionStore:
             self.Store[session_id] = {}
             return session_id
 
-    async def GetCurrentSession(self, req: Request) -> Dict[str, Any] | None:
+    async def GetCurrentSession(self, req: Request):
         session_id = req.cookies.get("session_id")
         if not session_id:
             return None
