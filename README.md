@@ -94,7 +94,19 @@
     - Response (200 OK):
   ```json
   {
-    "unapproved_users": [{"first_name": "...", "last_name": "...", ...}]
+    "unapproved_users": [
+      {
+        "id": int,
+        "first_name": string,
+        "last_name": string,
+        "email": string,
+        "phone": int,
+        "created": datetime,
+        "approved": int,
+        "active": int,
+        "role": string  
+      }
+    ]
   }
   ```
 
@@ -103,7 +115,19 @@
     - Response (200 OK):
   ```json
   {
-    "active_users": [{"first_name": "...", "last_name": "...", ...}]
+    "active_users": [
+        {
+          "id": int,
+          "first_name": string,
+          "last_name": string,
+          "email": string,
+          "phone": int,
+          "created": datetime,
+          "approved": int,
+          "active": int,
+          "role": string
+        }  
+    ]
   }
   ```
 
@@ -112,7 +136,19 @@
     - Response (200 OK):
   ```json
   {
-    "inactive_users": [{"first_name": "...", "last_name": "...", ...}]
+    "inactive_users": [
+        {
+          "id": int,
+          "first_name": string,
+          "last_name": string,
+          "email": string,
+          "phone": int,
+          "created": datetime,
+          "approved": int,
+          "active": int,
+          "role": string
+        }  
+    ]
   }
   ```
 
@@ -121,7 +157,19 @@
     - Response (200 OK):
   ```json
   {
-    "user": {"first_name": "...", "last_name": "...", ...}
+    "user": [
+        {
+          "id": int,
+          "first_name": string,
+          "last_name": string,
+          "email": string,
+          "phone": int,
+          "created": datetime,
+          "approved": int,
+          "active": int,
+          "role": string
+        }  
+    ]
   }
   ```
 
@@ -172,7 +220,19 @@
     - Response (200 OK):
   ```json
   {
-    "products": [{"id": "...", "name": "...", "description": "...", ...}]
+    "products": [
+      {
+        "id": int, 
+        "farmer_id": int, 
+        "name": string, 
+        "description": string,
+        "price": int,
+        "category_id": int,
+        "quantity": int,
+        "weight": float,
+        "created": datetime
+      }
+    ]
   }
   ```
 
@@ -194,7 +254,17 @@
   {
     "message": "OK",
     "redirect_url": "/user/role/farmer/products/{product_id}",
-    "authenticated_user": {"first_name": "...", "last_name": "...", ...} or null
+    "authenticated_user": {
+          "id": int,
+          "first_name": string,
+          "last_name": string,
+          "email": string,
+          "phone": int,
+          "created": datetime,
+          "approved": int,
+          "active": int,
+          "role": string
+        } or null
   }
   ```
 
@@ -203,8 +273,18 @@
     - Response (200 OK):
   ```json
   {
-    "product": {"id": "...", "name": "...", "description": "...", ...}, 
-    "images": [{"id": "...", "path": "...", ...}]
+    "product": {
+        "id": int, 
+        "farmer_id": int, 
+        "name": string, 
+        "description": string,
+        "price": int,
+        "category_id": int,
+        "quantity": int,
+        "weight": float,
+        "created": datetime
+      }, 
+    "images": [{"id": int, "path": string, "created":  datetime}]
   }
   ```
 
@@ -225,7 +305,17 @@
     - Response (200 OK):
   ```json
   {
-    "products": [{"id": "...", "name": "...", "description": "...", ...}]
+    "products": [{
+        "id": int, 
+        "farmer_id": int, 
+        "name": string, 
+        "description": string,
+        "price": int,
+        "category_id": int,
+        "quantity": int,
+        "weight": float,
+        "created": datetime
+      }]
   }
   ```
 
@@ -234,8 +324,18 @@
     - Response (200 OK):
   ```json
   {
-    "product": {"id": "...", "name": "...", "description": "...", ...}, 
-    "images": [{"id": "...", "path": "...", ...}]
+    "product": {
+        "id": int, 
+        "farmer_id": int, 
+        "name": string, 
+        "description": string,
+        "price": int,
+        "category_id": int,
+        "quantity": int,
+        "weight": float,
+        "created": datetime
+      }, 
+    "images": [{"id": int, "path": string, "created":  datetime}]
   }
   ```
 
@@ -245,9 +345,19 @@
   ```json
   {
     "message": 'string',
-    "details": 'string',
+    "details": 'string' or {"...": "...", ...},
     "request": {"...": "...", ...} or null,
-    "authenticated_user": {"first_name": "...", "last_name": "...", ...} or null
+    "authenticated_user": 
+        {
+          "first_name": string,
+          "last_name": string,
+          "email": string,
+          "phone": int,
+          "created": datetime,
+          "approved": int,
+          "active": int,
+          "role": string
+        } or null
   }
   ```
 

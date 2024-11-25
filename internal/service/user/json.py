@@ -11,7 +11,7 @@ def UserJson(user: User):
         "last_name": user.last_name,
         "email": user.email,
         "phone": user.phone_number,
-        "created": user.created.strftime("%d %b %Y %H:%M:%S"),
+        "created": user.created,
         "approved": user.approved,
         "active": user.active,
         "role": user.role,
