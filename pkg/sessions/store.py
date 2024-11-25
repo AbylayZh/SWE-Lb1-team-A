@@ -56,7 +56,7 @@ class SessionStore:
         async with self.Mutex:
             self.Store[session_id][key] = value
 
-    async def PopSessionFlash(self, req: Request) -> str | None:
+    async def PopSessionFlash(self, req: Request):
         session_id = req.cookies.get("session_id")
         if not session_id:
             return None
