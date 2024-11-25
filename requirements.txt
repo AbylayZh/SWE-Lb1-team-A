@@ -1,6 +1,7 @@
 fastapi
-requests
-gunicorn
+sqlalchemy
+pydantic
+starlette
 uvicorn
 jinja2
-aiofiles
+
