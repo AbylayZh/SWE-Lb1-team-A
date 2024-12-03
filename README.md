@@ -17,8 +17,8 @@
     - Request (JSON):
   ```json
   {
-    "email": 'string',
-    "password": 'string'
+    "email": "string",
+    "password": "string"
   }
   ```
     - Response (303 Redirect):
@@ -35,13 +35,13 @@
     - Request (JSON):
   ```json
   {
-    "first_name": 'string',
-    "last_name": 'string',
-    "email": 'string',
-    "phone": 'int',
-    "password": 'string',
-    "farm_size": 'int',
-    "farm_address": 'string'
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "phone": "int",
+    "password": "string",
+    "farm_size": "int",
+    "farm_address": "string"
   }
   ```
     - Response (303 Redirect):
@@ -58,13 +58,13 @@
     - Request (JSON):
   ```json
   {
-    "first_name": 'string',
-    "last_name": 'string',
-    "email": 'string',
-    "phone": 'int',
-    "password": 'string',
-    "delivery_address": 'str',
-    "preferred_payment": 'int'
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "phone": "int",
+    "password": "string",
+    "delivery_address": "string",
+    "preferred_payment": "int"
   }
   ```
     - Response (303 Redirect):
@@ -96,15 +96,15 @@
   {
     "unapproved_users": [
       {
-        "id": int,
-        "first_name": string,
-        "last_name": string,
-        "email": string,
-        "phone": int,
-        "created": datetime,
-        "approved": int,
-        "active": int,
-        "role": string  
+        "id": "int",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string",
+        "phone": "int",
+        "created": "datetime",
+        "approved": "int",
+        "active": "int",
+        "role": "string"  
       }
     ]
   }
@@ -117,15 +117,15 @@
   {
     "active_users": [
         {
-          "id": int,
-          "first_name": string,
-          "last_name": string,
-          "email": string,
-          "phone": int,
-          "created": datetime,
-          "approved": int,
-          "active": int,
-          "role": string
+          "id": "int",
+          "first_name": "string",
+          "last_name": "string",
+          "email": "string",
+          "phone": "int",
+          "created": "datetime",
+          "approved": "int",
+          "active": "int",
+          "role": "string"
         }  
     ]
   }
@@ -138,15 +138,15 @@
   {
     "inactive_users": [
         {
-          "id": int,
-          "first_name": string,
-          "last_name": string,
-          "email": string,
-          "phone": int,
-          "created": datetime,
-          "approved": int,
-          "active": int,
-          "role": string
+          "id": "int",
+          "first_name": "string",
+          "last_name": "string",
+          "email": "string",
+          "phone": "int",
+          "created": "datetime",
+          "approved": "int",
+          "active": "int",
+          "role": "string"
         }  
     ]
   }
@@ -157,19 +157,18 @@
     - Response (200 OK):
   ```json
   {
-    "user": [
-        {
-          "id": int,
-          "first_name": string,
-          "last_name": string,
-          "email": string,
-          "phone": int,
-          "created": datetime,
-          "approved": int,
-          "active": int,
-          "role": string
+    "user": {
+          "id": "int",
+          "first_name": "string",
+          "last_name": "string",
+          "email": "string",
+          "phone": "int",
+          "created": "datetime",
+          "approved": "int",
+          "active": "int",
+          "role": "string"
         }  
-    ]
+    
   }
   ```
 
@@ -222,15 +221,15 @@
   {
     "products": [
       {
-        "id": int, 
-        "farmer_id": int, 
-        "name": string, 
-        "description": string,
-        "price": int,
-        "category_id": int,
-        "quantity": int,
-        "weight": float,
-        "created": datetime
+        "id": "int", 
+        "farmer_id": "int", 
+        "name": "string", 
+        "description": "string",
+        "price": "int",
+        "category_id": "int",
+        "quantity": "int",
+        "weight": "float",
+        "created": "datetime"
       }
     ]
   }
@@ -240,13 +239,13 @@
     - Request (form-data):
   ```json
   {
-    "name": 'string',
-    "description": 'string',
-    "price": 'int',
-    "category_id": 'int',
-    "quantity": 'int',
-    "weight": 'float',
-    "files": ['file_type']
+    "name": "string",
+    "description": "string",
+    "price": "int",
+    "category_id": "int",
+    "quantity": "int",
+    "weight": "float",
+    "files": ["file_type"]
   }
   ```
     - Response (303 Redirect):
@@ -255,15 +254,15 @@
     "message": "OK",
     "redirect_url": "/user/role/farmer/products/{product_id}",
     "authenticated_user": {
-          "id": int,
-          "first_name": string,
-          "last_name": string,
-          "email": string,
-          "phone": int,
-          "created": datetime,
-          "approved": int,
-          "active": int,
-          "role": string
+          "id": "int",
+          "first_name": "string",
+          "last_name": "string",
+          "email": "string",
+          "phone": "int",
+          "created": "datetime",
+          "approved": "int",
+          "active": "int",
+          "role": "string"
         } or null
   }
   ```
@@ -274,17 +273,17 @@
   ```json
   {
     "product": {
-        "id": int, 
-        "farmer_id": int, 
-        "name": string, 
-        "description": string,
-        "price": int,
-        "category_id": int,
-        "quantity": int,
-        "weight": float,
-        "created": datetime
+        "id": "int", 
+        "farmer_id": "int", 
+        "name": "string", 
+        "description": "string",
+        "price": "int",
+        "category_id": "int",
+        "quantity": "int",
+        "weight": "float",
+        "created": "datetime"
       }, 
-    "images": [{"id": int, "path": string, "created":  datetime}]
+    "images": [{"id": "int", "path": "string", "created":  "datetime"}]
   }
   ```
 
@@ -305,17 +304,19 @@
     - Response (200 OK):
   ```json
   {
-    "products": [{
-        "id": int, 
-        "farmer_id": int, 
-        "name": string, 
-        "description": string,
-        "price": int,
-        "category_id": int,
-        "quantity": int,
-        "weight": float,
-        "created": datetime
-      }]
+    "products": [
+      {
+        "id": "int", 
+        "farmer_id": "int", 
+        "name": "string", 
+        "description": "string",
+        "price": "int",
+        "category_id": "int",
+        "quantity": "int",
+        "weight": "float",
+        "created": "datetime"
+      }
+    ]
   }
   ```
 
@@ -325,17 +326,17 @@
   ```json
   {
     "product": {
-        "id": int, 
-        "farmer_id": int, 
-        "name": string, 
-        "description": string,
-        "price": int,
-        "category_id": int,
-        "quantity": int,
-        "weight": float,
-        "created": datetime
+        "id": "int", 
+        "farmer_id": "int", 
+        "name": "string", 
+        "description": "string",
+        "price": "int",
+        "category_id": "int",
+        "quantity": "int",
+        "weight": "float",
+        "created": "datetime"
       }, 
-    "images": [{"id": int, "path": string, "created":  datetime}]
+    "images": [{"id": "int", "path": "string", "created":  "datetime"}]
   }
   ```
 
@@ -344,11 +345,10 @@
 - **401 (Unauthorized) / 403 (Forbidden) / 409 (Conflict) / 422 (Unprocessable Entity)**:
   ```json
   {
-    "message": 'string',
-    "details": 'string' or {"...": "...", ...},
+    "message": "string",
+    "details": "string" or {"...": "...", ...},
     "request": {"...": "...", ...} or null,
-    "authenticated_user": 
-        {
+    "authenticated_user": {
           "first_name": string,
           "last_name": string,
           "email": string,
@@ -364,14 +364,14 @@
 - **404 (Not Found) / 405 (Method Not Allowed)**:
   ```json
   {
-    "detail": 'string'
+    "detail": "string"
   }
   ```
 
 - **500 (Internal Server)**:
   ```json
   {
-    "message": 'string',
-    "details": 'string'
+    "message": "string",
+    "details": "string"
   }
   ```

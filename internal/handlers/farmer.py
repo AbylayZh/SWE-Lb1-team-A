@@ -37,7 +37,12 @@ def ProductsHandler(req: Request, service: Services = Depends(services)):
     try:
         user = getattr(req.state, 'user', None)
         products = service.product_service.GetAllByFarmerID(user.farmer.id)
-        response = {"products": products}
+
+        images = []
+        for product in products:
+            images.append(service.image_service.GetAllByProductID(product.id))
+
+        response = {"products": products, "images": images}
 
         return service.render(req, response)
     except Exception as e:
