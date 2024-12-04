@@ -1,5 +1,26 @@
 # SWE-team-A
 
+## How to use:
+
+Link to the API (Render): [https://swe-lb1-team-a.onrender.com](https://swe-lb1-team-a.onrender.com)
+
+Or...
+
+1. Clone repo:
+```shell
+git clone https://github.com/itelman/farmer-market-system.git
+```
+
+2. Open repo:
+```shell
+cd ./farmer-market-system
+```
+
+3. Run the repo:
+```shell
+fastapi dev main.py
+```
+
 ## Admin Credentials
 
 ```json
